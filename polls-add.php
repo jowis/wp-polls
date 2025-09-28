@@ -57,6 +57,8 @@ if ( ! empty($_POST['do'] ) ) {
 				} else {
 					$pollq_multiple = 0;
 				}
+				// Poll Anonymous
+				$pollq_anonymous = isset( $_POST['pollq_anonymous'] ) ? 1 : 0;
 				// Insert Poll
 				$add_poll_question = $wpdb->insert(
 					$wpdb->pollsq,
@@ -67,11 +69,13 @@ if ( ! empty($_POST['do'] ) ) {
 						'pollq_active'      => $pollq_active,
 						'pollq_expiry'      => $pollq_expiry,
 						'pollq_multiple'    => $pollq_multiple,
-						'pollq_totalvoters' => 0
+						'pollq_totalvoters' => 0,
+						'pollq_anonymous'   => $pollq_anonymous
 					),
 					array(
 						'%s',
 						'%s',
+						'%d',
 						'%d',
 						'%d',
 						'%d',
@@ -191,6 +195,22 @@ $count = 0;
 				</select>
 			</td>
 		</tr>
+	</table>
+	<!-- Poll anonymity -->
+	<h3><?php _e('Poll Anonymity', 'wp-polls'); ?></h3>
+	<table class="form-table">
+			<tr>
+				<th width="40%" scope="row" valign="top"><?php _e('Enable Anonymous Voting?', 'wp-polls'); ?></th>
+				<td width="60%">
+					<select name="pollq_anonymous" id="pollq_anonymous" size="1">
+						<option value="0"><?php _e('No', 'wp-polls'); ?></option>
+						<option value="1"><?php _e('Yes', 'wp-polls'); ?></option>
+					</select>
+					<p class="description">
+						<?php _e('If set to "Yes", the voting log will record the IP/Host but will NOT link it to the specific answer voted. It ensures voter privacy while still blocking duplicate votes.', 'wp-polls'); ?>
+					</p>
+				</td>
+			</tr>
 	</table>
 	<!-- Poll Start/End Date -->
 	<h3><?php _e('Poll Start/End Date', 'wp-polls'); ?></h3>
